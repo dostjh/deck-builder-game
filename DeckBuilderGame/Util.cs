@@ -28,8 +28,8 @@ namespace DeckBuilderGame
 
 			while (!success)
 			{
-				var input = GetUserInputInt(prompt);
-				success = IsValueInRange(input, min, max);
+				result = GetUserInputInt(prompt);
+				success = IsValueInRange(result, min, max);
 			}
 
 			return result;

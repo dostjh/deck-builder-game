@@ -1,27 +1,36 @@
-﻿using DeckBuilderGame.GameAtoms;
-using System;
+﻿using DeckBuilderGame.Cards;
+using DeckBuilderGame.GameAtoms;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DeckBuilderGame
 {
 	class GameState
 	{
-		public List<Player> Players;
-		public List<ICard> Trash;
+		public Dictionary<int, Player> Players;
+		public List<Card> Trash;
+		public int Round;
+		public int CurrentPlayer;
+		public int ActionMax;
+		public int DrawCount;
 
 		public GameState()
 		{
 
 		}
 
-		public GameState(int playerCount)
+		public GameState(int playerCount, List<Card> cards, GameDataSerializable gameData)
 		{
-			Players = new List<Player>();
+			Players = new Dictionary<int, Player>();
 			for (var i = 0; i < playerCount; i++)
 			{
-				Players.Add(new Player());
+				Players.Add(i, new Player(i, cards));
 			}
+			
+			Trash = new List<Card>();
+			Round = 0;
+			CurrentPlayer = 0;
+			ActionMax = gameData.Rules.MaxAction;
+			DrawCount = gameData.Rules.DrawCount;
 		}
 	}
 }

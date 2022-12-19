@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Game>
+	<Name>Dominion</Name>
+	<Rules>
+		<MaxAction>1</MaxAction>
+		<TurnDraw>3</TurnDraw>
+	</Rules>
+	<Cards>
+		<Card>
+			<Name>Village</Name>
+			<Description>+1 Action; +2 Cards</Description>
+			<Cost>3</Cost>
+			<Value>0</Value>
+			<CardType>Action</CardType>
+			<Logic>
+				<Step Name="IncrementActionMax">
+					<Parameters>
+						<Parameter Name="amount" Value="1"/>
+					</Parameters>
+				</Step>
+				<Step Name="DrawCards">
+					<Parameters>
+						<Parameter Name="amount" Value="2"/>
+					</Parameters>
+				</Step>
+			</Logic>
+		</Card>
+	</Cards>
+</Game>
