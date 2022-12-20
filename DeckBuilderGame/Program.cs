@@ -26,7 +26,7 @@ namespace DeckBuilderGame
 				player.StartTurn();
 				player.EndTurn();
 				player.Shuffle();
-				player.PlayCard(0);
+				player.PlayCard(0, gameState);
 			}
 
 			Console.WriteLine($"The game has {gameState.Players.Count} players.");

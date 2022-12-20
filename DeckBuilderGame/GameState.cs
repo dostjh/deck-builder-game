@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace DeckBuilderGame
 {
-	internal class GameState
+	public class GameState
 	{
 		public Dictionary<int, Player> Players;
-		public List<Card> Trash;
+		internal List<Card> Trash { get; set; }
 		public int Round;
 		public int CurrentPlayer;
 		public int ActionMax;
@@ -18,7 +18,7 @@ namespace DeckBuilderGame
 
 		}
 
-		public GameState(int playerCount, List<Card> cards, GameDataSerializable gameData)
+		internal GameState(int playerCount, List<Card> cards, GameDataSerializable gameData)
 		{
 			Players = new Dictionary<int, Player>();
 			for (var i = 0; i < playerCount; i++)

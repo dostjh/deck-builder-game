@@ -8,8 +8,11 @@ namespace DeckBuilderGame.GameAtoms
 	{
 		public string Name;
 		public int Order;
-		public int ActionsTaken;
+		public int CurrencyCount;
+		public int ActionCount;
 		public int ActionMax;
+		public int BuyCount;
+		public int BuyMax;
 
 		internal Dictionary<int, Card> Hand { get; set; }
 		internal List<Card> DrawPile;
@@ -64,6 +67,16 @@ namespace DeckBuilderGame.GameAtoms
 			}
 		}
 
+		public void DiscardCards(int amount)
+		{
+			// TODO, this will need to be a user opt in list for DiscardAndDrawPlayerChoiceAction
+			for (var i = 0; i < amount; i++)
+			{
+				Hand.Remove(i);
+			}
+			// TODO protect against discarding too many cards; possibly return amount actually discarded
+		}
+
 		private void ReorderHand()
 		{
 			// Reorder the hand
@@ -76,8 +89,10 @@ namespace DeckBuilderGame.GameAtoms
 			Hand = tempHand;
 		}
 
-		public void PlayCard(int cardNumber)
+		public void PlayCard(int cardNumber, GameState gameState)
 		{
+			Console.WriteLine($"Player at beginning of turn:\n\t{this}");
+			Console.WriteLine($"Player {Order} plays {Hand[cardNumber]}.");
 			var actions = Hand[cardNumber].Logic;
 			DiscardPile.Add(Hand[cardNumber]);
 			Hand.Remove(cardNumber);
@@ -93,6 +108,10 @@ namespace DeckBuilderGame.GameAtoms
 					{
 						parameters[i] = Convert.ChangeType(this, methodParameters[i].ParameterType);
 					}
+					else if (methodParameters[i].Name == "gamestate")
+					{
+						parameters[i] = Convert.ChangeType(gameState, methodParameters[i].ParameterType);
+					}
 					else
 					{
 						parameters[i] = Convert.ChangeType(step.Value[i], methodParameters[i].ParameterType);
@@ -101,37 +120,7 @@ namespace DeckBuilderGame.GameAtoms
 
 				step.Key.Invoke(null, parameters);
 			}
+			Console.WriteLine($"Player at end of turn:\n\t{this}");
 		}
-	}
-
-	static public class Actions
-	{
-		static public void IncrementActionMaxAction(int amount, Player player)
-		{
-			// TODO
-			Console.WriteLine($"Would have incremented action max by {amount}");
-			player.ActionMax += amount;
-		}
-
-		static public void DrawCardsAction(int amount, Player player)
-		{
-			// TODO
-			Console.WriteLine($"Would have drawn {amount} cards.");
-			player.DrawCards(amount);
-		}
-
-		/*
-		 * TODO: Allowable actions
-		 * 
-		 * IncrementBuyMaxAction(int amount)
-		 * IncrementCurrencyAction(int amount)
-		 * AddCardFromPoolAction(int maxCost)
-		 * ForceOpponentDiscardAction(int amount)
-		 * TrashCardAction(int amount)
-		 * DrawCardAction(int amount)
-		 * DiscardAndDrawPlayerChoiceAction()
-		 * 
-		 * 
-		 */
 	}
 }

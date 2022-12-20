@@ -6,6 +6,9 @@
 		<MaxBuy>1</MaxBuy>
 		<TurnDraw>3</TurnDraw>
 	</Rules>
+	<Terms>
+		<Currency>Treasure</Currency>
+	</Terms>
 	<Cards>
 		<!--Action Cards-->
 		<Card>
@@ -18,13 +21,11 @@
 				<Step Name="IncrementActionMaxAction">
 					<Parameters>
 						<Parameter Name="amount" Value="1"/>
-						<Parameter Name="player"/>
 					</Parameters>
 				</Step>
 				<Step Name="DrawCardsAction">
 					<Parameters>
 						<Parameter Name="amount" Value="2"/>
-						<Parameter Name="player"/>
 					</Parameters>
 				</Step>
 			</Logic>
@@ -39,12 +40,127 @@
 				<Step Name="IncrementActionMaxAction">
 					<Parameters>
 						<Parameter Name="amount" Value="1"/>
-						<Parameter Name="player"/>
 					</Parameters>
 				</Step>
-				<!-- TODO: Complicated logic
 				<Step Name="DiscardAndDrawPlayerChoiceAction" />
-				-->
+			</Logic>
+		</Card>
+		<Card>
+			<Name>Market</Name>
+			<Description>+1 Card; +1 Action; +1 Buy; +1 Coin</Description>
+			<Cost>5</Cost>
+			<CardType>Action</CardType>
+			<Logic>
+				<Step Name="DrawCardsAction">
+					<Parameters>
+						<Parameter Name="amount" Value="1"/>
+					</Parameters>
+				</Step>
+				<Step Name="IncrementActionMaxAction">
+					<Parameters>
+						<Parameter Name="amount" Value="1"/>
+					</Parameters>
+				</Step>
+				<Step Name="IncrementBuyMaxAction">
+					<Parameters>
+						<Parameter Name="amount" Value="1"/>
+					</Parameters>
+				</Step>
+				<Step Name="IncrementCurrencyAction">
+					<Parameters>
+						<Parameter Name="amount" Value="1"/>
+					</Parameters>
+				</Step>
+			</Logic>
+		</Card>
+		<Card>
+			<Name>Militia</Name>
+			<Description>+2 Coin; Each other player discards down to 3 cards in his hand.</Description>
+			<Cost>4</Cost>
+			<CardType>ActionAttack</CardType>
+			<!-- TODO Logic -->
+		</Card>
+		<Card>
+			<Name>Mine</Name>
+			<Description>Trash a Treasure card from your hand. Gain a Treasure card costing up to 3 more. Put it in your hand.</Description>
+			<Cost>5</Cost>
+			<CardType>Action</CardType>
+			<Logic>
+				<Step Name="TrashCardAction">
+					<Parameters>
+						<Parameter Name="amount" Value ="1"/>
+						<Parameter Name="cardType" Value ="Currency" ParameterType="DeckBuilderGame.GameAtoms.CardType"/>
+					</Parameters>
+				</Step>
+				<Step Name="AddCardFromPoolWithCostBasedMaxAction">
+					<Parameters>
+						<Parameter Name="costBasedMax" Value="3" />
+					</Parameters>
+				</Step>
+			</Logic>
+		</Card>
+		<Card>
+			<Name>Moat</Name>
+			<Description>+2 Cards; When another player plays an attack card, you may reveal this from your hand. If you do, you are unaffected by that attack.</Description>
+			<Cost>2</Cost>
+			<CardType>ActionReaction</CardType>
+			<!-- TODO Logic -->
+		</Card>
+		<Card>
+			<Name>Remodel</Name>
+			<Description>Trash a card from your hand. Gain a card costing up to 2 more than the trashed card.</Description>
+			<Cost>4</Cost>
+			<CardType>Action</CardType>
+			<Logic>
+				<Step Name="TrashCardAction">
+					<Parameters>
+						<Parameter Name="amount" Value ="1"/>
+					</Parameters>
+				</Step>
+				<Step Name="AddCardFromPoolWithCostBasedMaxAction">
+					<Parameters>
+						<Parameter Name="costBasedMax" Value="1000" />
+					</Parameters>
+				</Step>
+			</Logic>
+		</Card>
+		<Card>
+			<Name>Smithy</Name>
+			<Description>Draw +3 Cards.</Description>
+			<Cost>4</Cost>
+			<CardType>Action</CardType>
+			<Logic>
+				<Step Name="DrawCardsAction">
+					<Parameters>
+						<Parameter Name="amount" Value="3"/>
+					</Parameters>
+				</Step>
+			</Logic>
+		</Card>
+		<Card>
+			<Name>Woodcutter</Name>
+			<Description>+1 Buy; +2 Coin</Description>
+			<Cost>3</Cost>
+			<CardType>Action</CardType>
+			<Logic>
+				<Step Name="IncrementBuyMaxAction">
+					<Parameters>
+						<Parameter Name="amount" Value="1"/>
+					</Parameters>
+				</Step>
+			</Logic>
+		</Card>
+		<Card>
+			<Name>Workshop</Name>
+			<Description>Gain a card costing up to 4.</Description>
+			<Cost>3</Cost>
+			<CardType>Action</CardType>
+			<Logic>
+				<Step Name="AddCardFromPoolAction">
+					<Parameters>
+						<Parameter Name="maxCost" Value="4"/>
+					</Parameters>
+				</Step>
 			</Logic>
 		</Card>
 		<!--Victory Cards-->

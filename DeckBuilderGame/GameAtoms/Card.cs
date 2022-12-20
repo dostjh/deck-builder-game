@@ -1,6 +1,7 @@
 ﻿using DeckBuilderGame.Cards;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using static DeckBuilderGame.GameAtoms.Player;
@@ -33,35 +34,17 @@ namespace DeckBuilderGame.GameAtoms
 			Cost = card.Cost;
 			Value = card.Value;
 			Logic = new Dictionary<MethodInfo, object[]>();
+			Console.WriteLine(card.Name);
 			foreach (var action in card.Logic)
 			{
 				var methodInfo = typeof(Actions).GetMethod(action.Name);
 				var parameterDict = action.Parameters.ToDictionary(p => p.Name, p => p.Value);
-				var parameters = methodInfo.GetParameters().Select(p => Convert.ChangeType(parameterDict[p.Name], p.ParameterType)).ToArray();
+				var parameters = methodInfo.GetParameters().Select(p => 
+						parameterDict.ContainsKey(p.Name) 
+						? Convert.ChangeType(parameterDict[p.Name], p.ParameterType)
+						: Convert.ChangeType(null, p.ParameterType))
+					.ToArray();
 				Logic.Add(methodInfo, parameters);
-			}
-		}
-
-		public void Play(Player player)
-		{
-			foreach (var step in Logic)
-			{
-				// TODO Hack to inject player parameter at runtime
-				var methodParameters = step.Key.GetParameters();
-				var parameters = new object[methodParameters.Length];
-				for (var i = 0; i < methodParameters.Length; i++)
-				{
-					if (methodParameters[i].Name == "player")
-					{
-						parameters[i] = Convert.ChangeType(player, typeof(Player));
-					}
-					else
-					{
-						parameters[i] = Convert.ChangeType(step.Value[i], step.Value[i].GetType());
-					}
-				}
-				
-				step.Key.Invoke(typeof(Actions), parameters);
 			}
 		}
 
@@ -93,13 +76,38 @@ namespace DeckBuilderGame.GameAtoms
 			return $"Type:{Type.ToString().ToUpper()}, Name:{Name},{(Description != null ? $" Description:{Description}," : "")} Cost:{Cost}, Value:{Value}";
 		}
 
-		
+		public override bool Equals(object obj)
+		{
+			var result = false;
+			
+			var tempObject = (Card)obj;
+			if (tempObject != null)
+			{
+				result = Name == tempObject.Name;
+			}
+
+			return result;
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Name);
+		}
 	}
 
 	public enum CardType
 	{
+		[Description("Action")]
 		Action,
+		[Description("Action - Attack")]
+		ActionAttack,
+		[Description("Action - Reaction")]
+		ActionReaction,
+		[Description("Victory")]
 		Victory,
-		Currency
+		[Description("Currency")]
+		Currency,
+		[Description("None")]
+		Default
 	}
 }
