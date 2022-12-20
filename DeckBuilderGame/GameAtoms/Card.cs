@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using static DeckBuilderGame.GameAtoms.Player;
 
 namespace DeckBuilderGame.GameAtoms
 {
-	class Card
+	internal class Card
 	{
 		public string Name;
 		public string Description;
@@ -41,11 +42,26 @@ namespace DeckBuilderGame.GameAtoms
 			}
 		}
 
-		public void Play()
+		public void Play(Player player)
 		{
 			foreach (var step in Logic)
 			{
-				step.Key.Invoke(typeof(Actions), step.Value);
+				// TODO Hack to inject player parameter at runtime
+				var methodParameters = step.Key.GetParameters();
+				var parameters = new object[methodParameters.Length];
+				for (var i = 0; i < methodParameters.Length; i++)
+				{
+					if (methodParameters[i].Name == "player")
+					{
+						parameters[i] = Convert.ChangeType(player, typeof(Player));
+					}
+					else
+					{
+						parameters[i] = Convert.ChangeType(step.Value[i], step.Value[i].GetType());
+					}
+				}
+				
+				step.Key.Invoke(typeof(Actions), parameters);
 			}
 		}
 
@@ -71,19 +87,13 @@ namespace DeckBuilderGame.GameAtoms
 			Console.WriteLine($"Cost: {Cost} | Value: {Value}");
 			Console.WriteLine("=========================");
 		}
-	}
 
-	static class Actions
-	{
-		static public void IncrementActionMax(int amount)
+		public override string ToString()
 		{
-			Console.WriteLine($"Would have incremented action max by {amount}");
+			return $"Type:{Type.ToString().ToUpper()}, Name:{Name},{(Description != null ? $" Description:{Description}," : "")} Cost:{Cost}, Value:{Value}";
 		}
 
-		static public void DrawCards(int amount)
-		{
-			Console.WriteLine($"Would have drawn {amount} cards.");
-		}
+		
 	}
 
 	public enum CardType

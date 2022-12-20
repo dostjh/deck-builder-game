@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DeckBuilderGame
 {
-	class GameState
+	internal class GameState
 	{
 		public Dictionary<int, Player> Players;
 		public List<Card> Trash;

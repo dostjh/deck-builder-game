@@ -6,9 +6,9 @@ using System.Xml.Serialization;
 
 namespace DeckBuilderGame
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			var playerCount = Util.GetUserInputInt("How many players are playing?", 2, 4);
 
@@ -30,11 +30,16 @@ namespace DeckBuilderGame
 			}
 
 			Console.WriteLine($"The game has {gameState.Players.Count} players.");
+			foreach (var player in gameState.Players)
+			{
+				Console.WriteLine($"Player {player.Key}: {player.Value}");
+			}
+			Console.ReadLine();
 		}
 
 		private static GameDataSerializable ImportGameData(string filePath)
 		{
-			XmlSerializer serializer = new XmlSerializer(typeof(GameDataSerializable));
+			var serializer = new XmlSerializer(typeof(GameDataSerializable));
 
 			GameDataSerializable cardData;
 

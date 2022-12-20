@@ -3,9 +3,11 @@
 	<Name>Dominion</Name>
 	<Rules>
 		<MaxAction>1</MaxAction>
+		<MaxBuy>1</MaxBuy>
 		<TurnDraw>3</TurnDraw>
 	</Rules>
 	<Cards>
+		<!--Action Cards-->
 		<Card>
 			<Name>Village</Name>
 			<Description>+1 Action; +2 Cards</Description>
@@ -13,17 +15,75 @@
 			<Value>0</Value>
 			<CardType>Action</CardType>
 			<Logic>
-				<Step Name="IncrementActionMax">
+				<Step Name="IncrementActionMaxAction">
 					<Parameters>
 						<Parameter Name="amount" Value="1"/>
+						<Parameter Name="player"/>
 					</Parameters>
 				</Step>
-				<Step Name="DrawCards">
+				<Step Name="DrawCardsAction">
 					<Parameters>
 						<Parameter Name="amount" Value="2"/>
+						<Parameter Name="player"/>
 					</Parameters>
 				</Step>
 			</Logic>
+		</Card>
+		<Card>
+			<Name>Cellar</Name>
+			<Description>+1 Action; Discard any number of cards; +1 card for each discarded</Description>
+			<Cost>2</Cost>
+			<Value>0</Value>
+			<CardType>Action</CardType>
+			<Logic>
+				<Step Name="IncrementActionMaxAction">
+					<Parameters>
+						<Parameter Name="amount" Value="1"/>
+						<Parameter Name="player"/>
+					</Parameters>
+				</Step>
+				<!-- TODO: Complicated logic
+				<Step Name="DiscardAndDrawPlayerChoiceAction" />
+				-->
+			</Logic>
+		</Card>
+		<!--Victory Cards-->
+		<Card>
+			<Name>Estate</Name>
+			<Cost>2</Cost>
+			<Value>1</Value>
+			<CardType>Victory</CardType>
+		</Card>
+		<Card>
+			<Name>Duchy</Name>
+			<Cost>5</Cost>
+			<Value>3</Value>
+			<CardType>Victory</CardType>
+		</Card>
+		<Card>
+			<Name>Province</Name>
+			<Cost>8</Cost>
+			<Value>6</Value>
+			<CardType>Victory</CardType>
+		</Card>
+		<!--Currency Cards-->
+		<Card>
+			<Name>Copper</Name>
+			<Cost>0</Cost>
+			<Value>1</Value>
+			<CardType>Currency</CardType>
+		</Card>
+		<Card>
+			<Name>Silver</Name>
+			<Cost>3</Cost>
+			<Value>2</Value>
+			<CardType>Currency</CardType>
+		</Card>
+		<Card>
+			<Name>Gold</Name>
+			<Cost>6</Cost>
+			<Value>3</Value>
+			<CardType>Currency</CardType>
 		</Card>
 	</Cards>
 </Game>
