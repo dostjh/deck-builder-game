@@ -8,16 +8,18 @@ namespace DeckBuilderGame
 {
 	internal class Program
 	{
-		private static void Main(string[] args)
+		private static void Main()
 		{
 			var playerCount = Util.GetUserInputInt("How many players are playing?", 2, 4);
 
 			var cards = new List<GameAtoms.Card>();
 
 			var gameData = ImportGameData(@".\..\..\..\config\Dominion.xml");
-			foreach (var card in gameData.Cards)
+			foreach (var serializedCard in gameData.Cards)
 			{
-				cards.Add(new GameAtoms.Card(card));
+				var card = new GameAtoms.Card(serializedCard);
+				cards.Add(card);
+				card.WriteToConsole();
 			}
 
 			var gameState = new GameState(playerCount, cards, gameData);
