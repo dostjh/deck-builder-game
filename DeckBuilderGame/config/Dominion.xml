@@ -89,7 +89,7 @@
 				<Step Name="TrashCardAction">
 					<Parameters>
 						<Parameter Name="amount" Value ="1"/>
-						<Parameter Name="cardType" Value ="Currency" ParameterType="DeckBuilderGame.GameAtoms.CardType"/>
+						<Parameter Name="cardType" Value ="Currency"/>
 					</Parameters>
 				</Step>
 				<Step Name="AddCardFromPoolWithCostBasedMaxAction">
