@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DeckBuilderGame.GameAtoms
@@ -28,7 +29,16 @@ namespace DeckBuilderGame.GameAtoms
 
 		public static void AddCardFromPoolAction(int maxCost, Player player, GameState gameState, CardType cardType = CardType.Default)
 		{
-			throw new NotImplementedException();
+			var successfulDraw = false;
+			var userSelection = string.Empty;
+			while (!successfulDraw)
+			{
+				var options = gameState.GetDrawableCardPool(maxCost);
+				userSelection = Util.GetUserInputOption("Which card do you want to draw?", options.Select(o => o.Name));
+				successfulDraw = gameState.DrawCardFromPool(userSelection);
+			}
+
+			player.DiscardPile.Add(gameState.CardDefinitions[userSelection]);
 		}
 
 		static public void AddCardFromPoolWithCostBasedMaxAction(int costBasedMax, Player player, GameState gameState, CardType cardType = CardType.Default)

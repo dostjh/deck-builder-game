@@ -16,13 +16,16 @@ namespace DeckBuilderGame
 			var games = ImportGames(@".\..\..\..\config\Games.xml");
 			var cardLibrary = ImportCardLibrary(@".\..\..\..\config\CardLibrary.xml");
 
-			var userGameSelection = Util.GetUserInputOption("What game are we playing?", games.Games.Select(g => g.Name));
+			//var userGameSelection = Util.GetUserInputOption("What game are we playing?", games.Games.Select(g => g.Name));
+			var userGameSelection = "Dominion - Base";
 			var game = games.Games.First(g => g.Name == userGameSelection);
 			var playerCount = Util.GetUserInputInt("How many players are playing?", 2, 4);
 
 			var gameState = new GameState(	playerCount, 
 											cardLibrary.CardDefinitions.Select(cd => new Card(cd)), 
 											game);
+
+			gameState.Players[0].PlaySpecificCard(gameState.CardDefinitions["Workshop"], gameState);
 
 			foreach (var player in gameState.Players.Values)
 			{

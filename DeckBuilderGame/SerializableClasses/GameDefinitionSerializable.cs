@@ -14,7 +14,8 @@ namespace DeckBuilderGame.SerializableClasses
 	public class GameDataSerializable
 	{
 		public string Name;
-		[XmlElement("Card")]
+		[XmlArray]
+		[XmlArrayItem("Card")]
 		public List<CardSerializable> Cards;
 		public Rules Rules;
 	}

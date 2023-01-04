@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace DeckBuilderGame.GameAtoms
 {
@@ -96,7 +97,20 @@ namespace DeckBuilderGame.GameAtoms
 			var actions = Hand[cardNumber].Logic;
 			DiscardPile.Add(Hand[cardNumber]);
 			Hand.Remove(cardNumber);
+			ExecuteCardActions(gameState, actions);
+			Console.WriteLine($"Player at end of turn:\n\t{this}");
+		}
 
+#if (DEBUG)
+		internal void PlaySpecificCard(Card card, GameState gameState)
+		{
+			ExecuteCardActions(gameState, card.Logic);
+		}
+
+#endif
+
+		private void ExecuteCardActions(GameState gameState, Dictionary<MethodInfo, object[]> actions)
+		{
 			foreach (var step in actions)
 			{
 				// TODO Hack to inject player parameter at runtime
@@ -108,9 +122,14 @@ namespace DeckBuilderGame.GameAtoms
 					{
 						parameters[i] = Convert.ChangeType(this, methodParameters[i].ParameterType);
 					}
-					else if (methodParameters[i].Name == "gamestate")
+					else if (methodParameters[i].Name == "gameState")
 					{
 						parameters[i] = Convert.ChangeType(gameState, methodParameters[i].ParameterType);
+					}
+					// In cases where there's a default specifier on the method
+					else if (step.Value[i] == null)
+					{
+						parameters[i] = step.Value[i];
 					}
 					else
 					{
@@ -120,7 +139,7 @@ namespace DeckBuilderGame.GameAtoms
 
 				step.Key.Invoke(null, parameters);
 			}
-			Console.WriteLine($"Player at end of turn:\n\t{this}");
 		}
+
 	}
 }
