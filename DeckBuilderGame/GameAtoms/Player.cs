@@ -15,21 +15,26 @@ namespace DeckBuilderGame.GameAtoms
 		public int BuyCount;
 		public int BuyMax;
 
-		internal Dictionary<int, Card> Hand { get; set; }
-		internal List<Card> DrawPile;
-		internal List<Card> DiscardPile { get; set; }
+		public Dictionary<int, Card> Hand { get; set; }
+		public List<Card> DrawPile;
+		public List<Card> DiscardPile { get; set; }
 
-		internal Player(int order, List<Card> drawPile)
+		public Player()
+		{
+
+		}
+
+		public Player(int order, List<Card> drawPile)
 		{
 			Order = order;
 			Hand = new Dictionary<int, Card>();
 			DiscardPile = new List<Card>();
 
-			var tempDrawPile = new Card[drawPile.Count()];
-			drawPile.CopyTo(tempDrawPile);
-			DrawPile = tempDrawPile.ToList();
+			var tempDiscardPile = new Card[drawPile.Count()];
+			drawPile.CopyTo(tempDiscardPile);
+			DiscardPile = tempDiscardPile.ToList();
 
-			Shuffle();
+			ShuffleDiscardPileIntoDrawPile();
 		}
 
 		public override string ToString()
@@ -49,14 +54,39 @@ namespace DeckBuilderGame.GameAtoms
 			Console.WriteLine("Player ends turn.");
 		}
 
-		public void Shuffle()
+		public void ShuffleDiscardPileIntoDrawPile()
 		{
-			Console.WriteLine("Player shuffles.");
+			// Fisher-Yates shuffle http://en.wikipedia.org/wiki/Fisher-Yates_shuffle
+			// https://stackoverflow.com/questions/1150646/card-shuffling-in-c-sharp
+			var random = new Random();
+			for (var n = DiscardPile.Count - 1; n > 0; n--)
+			{
+				var k = random.Next(n + 1);
+				var temp = DiscardPile[n];
+				DiscardPile[n] = DiscardPile[k];
+				DiscardPile[k] = temp;
+			}
+
+			DrawPile.AddRange(DiscardPile);
+			DiscardPile = new List<Card>();
+
+			Console.WriteLine("Player shuffles discard pile into draw pile.");
 		}
 
 		public void DrawCards(int amount)
 		{
-			// TODO, handle not having cards in draw pile. Need to shuffle discard if available, else continue.
+			// Handle not having cards in draw pile. Need to shuffle discard if available, 
+			// else set the amount to the amount of cards available in the draw pile.
+			if (amount > DrawPile.Count)
+			{
+				ShuffleDiscardPileIntoDrawPile();
+
+				if (amount > DrawPile.Count)
+				{
+					amount = DrawPile.Count;
+					Util.Error($"Not enough cards after Discard shuffled and added. Will draw {amount}.");
+				}
+			}
 
 			// Set the start Index to 0 so we can add to the Hand dictionary, 
 			// unless we already have a hand, in which case, set it to the last element's key + 1

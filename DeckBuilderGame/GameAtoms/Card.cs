@@ -8,7 +8,7 @@ using static DeckBuilderGame.GameAtoms.Player;
 
 namespace DeckBuilderGame.GameAtoms
 {
-	internal class Card
+	public class Card
 	{
 		public string Name;
 		public string Description;
@@ -35,6 +35,11 @@ namespace DeckBuilderGame.GameAtoms
 			Value = card.Value;
 
 			SetLogic(card);
+		}
+
+		public Card()
+		{
+
 		}
 
 		public void WriteToConsole()

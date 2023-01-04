@@ -58,5 +58,12 @@ namespace DeckBuilderGame
 		{
 			return value >= min && value <= max;
 		}
+
+		public static void Error(string message)
+		{
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine(message);
+			Console.ResetColor();
+		}
 	}
 }

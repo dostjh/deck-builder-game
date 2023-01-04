@@ -31,7 +31,7 @@ namespace DeckBuilderGame
 			{
 				player.StartTurn();
 				player.EndTurn();
-				player.Shuffle();
+				player.ShuffleDiscardPileIntoDrawPile();
 				player.PlayCard(0, gameState);
 			}
 
