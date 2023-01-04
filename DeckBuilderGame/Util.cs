@@ -1,9 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DeckBuilderGame
 {
 	public static class Util
 	{
+		public static string GetUserInputOption(string prompt, IEnumerable<string> options)
+		{
+			var result = string.Empty;
+			var success = false;
+
+			while (!success)
+			{
+				Console.WriteLine(prompt);
+				Console.WriteLine($"Options: {string.Join(", ", options)}");
+				result = Console.ReadLine();
+
+				success = options.Select(o => o.ToLower()).Any(o => o == result.ToLower().Trim());
+			}
+
+			return result;
+		}
+
 		public static int GetUserInputInt(string prompt)
 		{
 			var result = -1;

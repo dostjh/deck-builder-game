@@ -1,7 +1,9 @@
-﻿using DeckBuilderGame.Cards;
+﻿using DeckBuilderGame.GameAtoms;
+using DeckBuilderGame.SerializableClasses;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace DeckBuilderGame
@@ -10,19 +12,18 @@ namespace DeckBuilderGame
 	{
 		private static void Main()
 		{
+			
+			var games = ImportGames(@".\..\..\..\config\Games.xml");
+			var cardLibrary = ImportCardLibrary(@".\..\..\..\config\CardLibrary.xml");
+
+			var userGameSelection = Util.GetUserInputOption("What game are we playing?", games.Games.Select(g => g.Name));
+			var game = games.Games.First(g => g.Name == userGameSelection);
 			var playerCount = Util.GetUserInputInt("How many players are playing?", 2, 4);
 
-			var cards = new List<GameAtoms.Card>();
+			var gameState = new GameState(	playerCount, 
+											cardLibrary.CardDefinitions.Select(cd => new Card(cd)), 
+											game);
 
-			var gameData = ImportGameData(@".\..\..\..\config\Dominion.xml");
-			foreach (var serializedCard in gameData.Cards)
-			{
-				var card = new GameAtoms.Card(serializedCard);
-				cards.Add(card);
-				card.WriteToConsole();
-			}
-
-			var gameState = new GameState(playerCount, cards, gameData);
 			foreach (var player in gameState.Players.Values)
 			{
 				player.StartTurn();
@@ -39,18 +40,30 @@ namespace DeckBuilderGame
 			Console.ReadLine();
 		}
 
-		private static GameDataSerializable ImportGameData(string filePath)
+		private static GamesDataSerializable ImportGames(string gameDefinitionFilePath)
 		{
-			var serializer = new XmlSerializer(typeof(GameDataSerializable));
-
-			GameDataSerializable cardData;
-
-			using (var reader = new FileStream(filePath, FileMode.Open))
+			// Import games
+			var serializer = new XmlSerializer(typeof(GamesDataSerializable));
+			GamesDataSerializable games;
+			using (var reader = new FileStream(gameDefinitionFilePath, FileMode.Open))
 			{
-				cardData = (GameDataSerializable)serializer.Deserialize(reader);
+				games = (GamesDataSerializable)serializer.Deserialize(reader);
 			}
 
-			return cardData;
+			return games;
+		}
+
+		private static CardDefinitionsSerializable ImportCardLibrary(string cardLibraryFilePath)
+		{
+			// Import card library
+			var serializer = new XmlSerializer(typeof(CardDefinitionsSerializable));
+			CardDefinitionsSerializable cardDefinitionLibrary;
+			using (var reader = new FileStream(cardLibraryFilePath, FileMode.Open))
+			{
+				cardDefinitionLibrary = (CardDefinitionsSerializable)serializer.Deserialize(reader);
+			}
+
+			return cardDefinitionLibrary;
 		}
 	}
 }

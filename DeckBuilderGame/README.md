@@ -11,3 +11,7 @@
 * Action phase logic
 * Buy phase logic
 * Clean up (End turn) phase logic
+
+#DONE
+* Move cards to card definition library
+* Support multiple game definitions

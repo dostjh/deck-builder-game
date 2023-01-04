@@ -1,40 +1,38 @@
-﻿using DeckBuilderGame.GameAtoms;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace DeckBuilderGame.Cards
+namespace DeckBuilderGame.SerializableClasses
 {
-
-	[Serializable]
-	[XmlRoot("Game")]
+	[XmlRoot("Games")]
+	public class GamesDataSerializable
+	{
+		[XmlElement("Game")]
+		public List<GameDataSerializable> Games;
+	}
+	
+	
 	public class GameDataSerializable
 	{
-		[XmlArrayItem("Card")]
+		public string Name;
+		[XmlElement("Card")]
 		public List<CardSerializable> Cards;
 		public Rules Rules;
 	}
 
-	[Serializable]
 	public class Rules
 	{
 		public int MaxAction;
+		public int MaxBuy;
 		public int DrawCount;
 	}
 
-	[Serializable]
-	[XmlRoot("Card")]
 	public class CardSerializable
 	{
 		public string Name;
-		public string Description;
-		public int Cost;
-		public int Value;
-		public CardType CardType;
-		public List<Step> Logic;
+		public int Pool;
+		public bool NoLimit;
 	}
 
-	[Serializable]
 	public class Step
 	{
 		[XmlAttribute]
@@ -42,7 +40,6 @@ namespace DeckBuilderGame.Cards
 		public List<Parameter> Parameters;
 	}
 
-	[Serializable]
 	public class Parameter
 	{
 		[XmlAttribute]

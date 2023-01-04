@@ -1,4 +1,4 @@
-﻿using DeckBuilderGame.Cards;
+﻿using DeckBuilderGame.SerializableClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +26,7 @@ namespace DeckBuilderGame.GameAtoms
 			Value = value;
 		}
 
-		public Card(CardSerializable card)
+		public Card(CardDefinitionSerializable card)
 		{
 			Name = card.Name;
 			Description = card.Description;
@@ -83,7 +83,7 @@ namespace DeckBuilderGame.GameAtoms
 			return HashCode.Combine(Name);
 		}
 
-		void SetLogic(CardSerializable card)
+		void SetLogic(CardDefinitionSerializable card)
 		{
 			Logic = new Dictionary<MethodInfo, object[]>();
 			foreach (var action in card.Logic)

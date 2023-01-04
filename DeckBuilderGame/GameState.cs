@@ -1,6 +1,7 @@
-﻿using DeckBuilderGame.Cards;
+﻿using DeckBuilderGame.SerializableClasses;
 using DeckBuilderGame.GameAtoms;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DeckBuilderGame
 {
@@ -13,17 +14,12 @@ namespace DeckBuilderGame
 		public int ActionMax;
 		public int DrawCount;
 
-		public GameState()
-		{
-
-		}
-
-		internal GameState(int playerCount, List<Card> cards, GameDataSerializable gameData)
+		internal GameState(int playerCount, IEnumerable<Card> cards, GameDataSerializable gameData)
 		{
 			Players = new Dictionary<int, Player>();
 			for (var i = 0; i < playerCount; i++)
 			{
-				Players.Add(i, new Player(i, cards));
+				Players.Add(i, new Player(i, cards.ToList()));
 			}
 			
 			Trash = new List<Card>();

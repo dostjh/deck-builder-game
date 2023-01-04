@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Games>
+	<Game>
+		<Name>Dominion - Base</Name>
+		<Rules>
+			<MaxAction>1</MaxAction>
+			<MaxBuy>1</MaxBuy>
+			<TurnDraw>3</TurnDraw>
+		</Rules>
+		<Terms>
+			<Currency>Treasure</Currency>
+		</Terms>
+		<Cards>
+			<!--Action Cards-->
+			<Card>
+				<Name>Village</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Cellar</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Market</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Militia</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Mine</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Moat</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Remodel</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Smithy</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Woodcutter</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Workshop</Name>
+				<Pool>10</Pool>
+			</Card>
+			<!--Victory Cards-->
+			<Card>
+				<Name>Estate</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Duchy</Name>
+				<Pool>10</Pool>
+			</Card>
+			<Card>
+				<Name>Province</Name>
+				<Pool>10</Pool>
+			</Card>
+			<!--Currency Cards-->
+			<Card>
+				<Name>Copper</Name>
+				<NoLimit>true</NoLimit>
+			</Card>
+			<Card>
+				<Name>Silver</Name>
+				<NoLimit>true</NoLimit>
+			</Card>
+			<Card>
+				<Name>Gold</Name>
+				<NoLimit>true</NoLimit>
+			</Card>
+		</Cards>
+	</Game>
+</Games>
