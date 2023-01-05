@@ -7,9 +7,6 @@
 			<MaxBuy>1</MaxBuy>
 			<TurnDraw>3</TurnDraw>
 		</Rules>
-		<Terms>
-			<Currency>Treasure</Currency>
-		</Terms>
 		<Cards>
 			<!--Action Cards-->
 			<Card>
