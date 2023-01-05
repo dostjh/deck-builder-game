@@ -28,6 +28,7 @@ namespace DeckBuilderGame.GameAtoms
 		{
 			Order = order;
 			Hand = new Dictionary<int, Card>();
+			DrawPile = new List<Card>();
 			DiscardPile = new List<Card>();
 
 			var tempDiscardPile = new Card[drawPile.Count()];

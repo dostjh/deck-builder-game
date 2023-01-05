@@ -25,14 +25,12 @@ namespace DeckBuilderGame
 											cardLibrary.CardDefinitions.Select(cd => new Card(cd)), 
 											game);
 
-			gameState.Players[0].PlaySpecificCard(gameState.CardDefinitions["Workshop"], gameState);
-
 			foreach (var player in gameState.Players.Values)
 			{
 				player.StartTurn();
+				player.PlayCard(0, gameState);
 				player.EndTurn();
 				player.ShuffleDiscardPileIntoDrawPile();
-				player.PlayCard(0, gameState);
 			}
 
 			Console.WriteLine($"The game has {gameState.Players.Count} players.");
@@ -40,6 +38,7 @@ namespace DeckBuilderGame
 			{
 				Console.WriteLine($"Player {player.Key}: {player.Value}");
 			}
+			Console.WriteLine("Game over. Press any key to end.");
 			Console.ReadLine();
 		}
 
