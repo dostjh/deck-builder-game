@@ -10,9 +10,6 @@ This is a personal project to build a fully configurable deck building card game
 > * Multiplayer support has not been implemented
 > * It's not pretty... yet.
 
-## Getting started
-TODO
-
 ## Configuring games
 Games are configured in `config\Games.xml`. Each game should specify a game name, max number of players, and default values for max buy, max action, and max draw per turn. The game should also specify the cards used in the game's common pool as well as how many cards for each. If a card is unlimited, you can instead specify `<NoLimit>true</NoLimit>`. Listed cards need to be configured in `config\CardLibrary.xml`.
 
